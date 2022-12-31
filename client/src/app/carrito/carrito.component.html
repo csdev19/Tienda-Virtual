@@ -12,33 +12,60 @@
             <input type="email" class="form-control" id="correo" name="correo" placeholder="Ingrese su correo" [formControl]="userEmail" required>
         </div>
 
-        <div id="carrito" class="contenido">
-            <table class="tabla" id="lista-compra">
-                <thead>
-                    <tr>
-                        <th scope="col">Imagen</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Sub Total</th>
-                        <th scope="col">Eliminar</th>
-                    </tr>
-                </thead>
+    
+            <div id="carrito" class="contenido">
+                <table class="tabla" id="lista-compra">
+                    <thead>
+                        <tr>
+                            <th scope="col">Imagen</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Sub Total</th>
+                            <th scope="col">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    
+                        <ng-container *ngFor="let product of products">
+                            <tr>
+                                <td>
+                                    <img [src]="product.image" alt="image" width=100>
+                                </td>
+                                <td>{{product.name}}</td>
+                                <td>${{product.price}}</td>
+                                <td>${{product.quantity}}</td>
+                                <td>${{product.price * product.quantity}}</td>
+                                <td>
+                                    <button (click)="eraseProduct(product.id)">Borrar</button>
+                                </td>
+                            </tr>
+                        </ng-container>
+    
+                    </tbody>
+                    <!-- <tr>
+                        <th colspan="4" scope="col" class="">SUB TOTAL :</th>
+                        <th scope="col">
+                            <p id="subtotal">{{getSubtotal()}}</p>
+                        </th>
+                    </tr> -->
+
+                <!-- </thead> -->
                 <tbody>
 
                     <ng-container *ngFor="let carrito of carritos">
                         <tr>
                             <td>
                                 <img [src]="carrito.image" title="image" width=100>
-                                </td>
-                                <td>$ {{carrito.name}}</td>
-                                <td>$ {{carrito.price}}</td>
-                                <td>$ {{carrito.cantidad}}</td>
-                                <td>$ {{carrito.price * carrito.cantidad}}</td>
-                                <td>
-                                    <button>Eliminar</button>
-                                </td>
-                                <td>
+                            </td>
+                            <td>$ {{carrito.name}}</td>
+                            <td>$ {{carrito.price}}</td>
+                            <td>$ {{carrito.cantidad}}</td>
+                            <td>$ {{carrito.price * carrito.cantidad}}</td>
+                            <td>
+                                <button>Eliminar</button>
+                            </td>
+                            <td>
                                 <a href="#" class="borrar-producto fas fa-times-circle" data-id="${carrito.id}"></a>
                             </td>
                         </tr>
@@ -72,9 +99,11 @@
             <img id="cargando" src="assets/img/cargando.gif" width="220">
         </div> -->
 
-        <div class="botones-envio">
-                <a href="productos.html" class="button" id="volver">Seguir comprando</a>
-                <input type="button" class="button" id="procesar-compra" (click)="validarCorreo()"value="Realizar compra">
+        <div *ngIf="!processingPayment" class="botones-envio">
+                <!-- <a href="productos.html" class="button" id="volver">Seguir comprando</a> -->
+                <a routerLink="/products">Seguir comprando</a>
+                <!-- <input type="submit" class="button" id="procesar-compra" onclick="validarCorreo(form.correo.value)"value="Realizar compra"> -->
+                <button type="button" (click)="validarCorreo()">Realizar compra</button>
         </div>
     </form>
 
